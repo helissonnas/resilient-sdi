@@ -12,7 +12,7 @@ except Exception as e:
 
 def find_all_services():
     query = """
-      SELECT id, url, type, title, description, publisher, geometry FROM service LIMIT 10; 
+      SELECT id, url, type, title, description, publisher, geometry FROM service LIMIT 10;
     """
     result = engine.execute(query).fetchall()
     list_all_services = []
@@ -27,7 +27,7 @@ def find_all_services():
 
 def find_feature_of_service(service_id):
     query = """
-      SELECT id, title, name, description, keywords, service_id, geometry FROM feature_type WHERE service_id = '""" + service_id + """' LIMIT 10; 
+      SELECT id, title, name, description, keywords, service_id, geometry FROM feature_type WHERE service_id = '""" + service_id + """' LIMIT 10;
     """
     result = engine.execute(query).fetchall()
 
@@ -43,7 +43,7 @@ def find_feature_of_service(service_id):
 
 def find_service(id):
     query = """
-      SELECT id, url, type, title, description, publisher, geometry FROM service WHERE id = """ + id + """LIMIT 10; 
+      SELECT id, url, type, title, description, publisher, geometry FROM service WHERE id = '""" + id + """';
     """
     result = engine.execute(query).fetchall()
 
@@ -51,14 +51,40 @@ def find_service(id):
 
     if len(result) > 0:
         for s in result:
-            service = Service(s[0], s[1], s[2], s[3], s[4], s[5], s[6])
+            service = Service(s[0], s[1], s[2], s[3], s[4], s[5], s[6], None)
 
     return service.serialize()
 
 
+def find_feature(id):
+    query = """
+      SELECT
+        id,
+        title,
+        name,
+        description,
+        keywords,
+        service_id,
+        geometry
+      FROM
+        feature_type
+      WHERE
+        id = '""" + id + """';
+    """
+    result = engine.execute(query).fetchall()
+
+    feature = None
+
+    if len(result) > 0:
+        for s in result:
+            feature = FeatureType(s[0], s[1], s[2], s[3], s[4], s[5], s[6])
+
+    return feature.serialize()
+
+
 def find_all_features():
     query = """
-      SELECT id, title, name, description, keywords, service_id, geometry FROM feature_type LIMIT 10; 
+      SELECT id, title, name, description, keywords, service_id, geometry FROM feature_type LIMIT 10;
     """
     result = engine.execute(query).fetchall()
     list_all_features = []
