@@ -1,3 +1,4 @@
+feature-indexer/semantic-annotator/skip_s100.txt
 .DS_Store
 .env
 .flaskenv
@@ -5,6 +6,8 @@
 *.pyo
 env/
 env*
+venv/
+venv/*
 dist/
 build/
 *.egg
@@ -22,3 +25,4 @@ htmlcov/
 .coverage
 .coverage.*
 *,cover
+.gradle*
