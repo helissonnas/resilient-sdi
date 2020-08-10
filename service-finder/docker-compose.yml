@@ -1,0 +1,11 @@
+version: '3'
+services:
+  database:
+    image: 'postgres' # use latest official postgres version
+    ports:
+      - '5436:5432'
+    env_file:
+      - database.env # configure postgres
+    volumes:
+      - /home/bd/postgresqlfinder:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

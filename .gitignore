@@ -4,6 +4,7 @@ feature-indexer/semantic-annotator/skip_s100.txt
 .flaskenv
 *.pyc
 *.pyo
+*.env
 env/
 env*
 venv/
