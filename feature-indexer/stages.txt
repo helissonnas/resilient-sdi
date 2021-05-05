@@ -1,0 +1,13 @@
+Service ->
+  GetCapabilities ->
+    DescribeFeatureType
+
+sistemas.florestal ->
+  https://sistemas.florestal.gov.br/geoserver/ows?service=WFS&version=1.0.0&request=GetCapabilities ->
+    https://sistemas.florestal.gov.br/geoserver/wfs?request=DescribeFeatureType 
+
+sistemas.anatel ->
+  http://sistemas.anatel.gov.br/geoserver/ANATEL/ows?service=WFS&version=1.0.0&request=GetCapabilities ->
+    http://sistemas.anatel.gov.br/geoserver/ANATEL/wfs?request=DescribeFeatureType
+      http://sistemas.anatel.gov.br/geoserver/ANATEL/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=<NAME>&maxFeatures=10&outputFormat=application%2Fjson
+
