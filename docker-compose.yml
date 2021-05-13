@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  sdi-database:
+    container_name: sdi-database
+    build:
+      context: database
+    networks:
+      - resilient-sdi-network
+
+  feature-indexer:
+    container_name: feature-indexer
+    networks:
+      - resilient-sdi-network
+    volumes:
+      - ./feature-indexer:/server
+    build:
+      context: feature-indexer
+    depends_on:
+      - sdi-database
+
+  sdi-gateway:
+    container_name: sdi-gateway
+    networks:
+      - resilient-sdi-network
+    build:
+      context: sdi-gateway
+    ports:
+      - '8080:8080'
+    depends_on:
+      - feature-indexer
+
+  service-finder:
+    container_name: service-finder
+    volumes:
+      - ./service-finder:/server
+    networks:
+      - resilient-sdi-network
+    build:
+      context: service-finder
+
+networks:
+  resilient-sdi-network:

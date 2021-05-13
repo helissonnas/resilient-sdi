@@ -26,3 +26,6 @@ htmlcov/
 .coverage.*
 *,cover
 .gradle*
+
+05_place_insert.sql
+*.backup

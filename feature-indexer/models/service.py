@@ -1,8 +1,7 @@
 class Service(object):
-    def __init__(self, id, url, type, title, description, publisher, geometry, features):
+    def __init__(self, id, wfs_url, title, description, publisher, geometry, features):
         self.id = id
-        self.url = url
-        self.type = type
+        self.wfs_url = wfs_url
         self.title = title
         self.description = description
         self.publisher = publisher
@@ -18,8 +17,7 @@ class Service(object):
     def serialize(self):
         return {
             'id': self.id,
-            'url': self.url,
-            'type': self.type,
+            'wfs_url': self.wfs_url,
             'title': self.title,
             'description': self.description,
             'publisher': self.publisher,

@@ -37,7 +37,7 @@ def get_feature_url(id):
     feature = data_access.find_feature(id)
     service = data_access.find_service(feature['service_id'])
 
-    url = service['url']
+    url = service['wfs_url']
     url_re = re.sub(r'layers=[^&]*', 'layers='+feature['name'], url)
     url_concat = url_re + '&request=GetMap&srs=EPSG:4326&format=application/openlayers'
     print(url_concat)
@@ -45,4 +45,4 @@ def get_feature_url(id):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

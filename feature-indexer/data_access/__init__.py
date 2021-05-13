@@ -5,14 +5,14 @@ from models.feature_type import FeatureType
 
 try:
     engine = create_engine(
-        'postgresql://postgres:sapo1606@localhost:5432/inde_database')
+        'postgresql://postgres:postgres@sdi-database:5432/inde_database_docker', pool_size=10, max_overflow=30)
 except Exception as e:
     raise
 
 
 def find_all_services():
     query = """
-      SELECT id, url, type, title, description, publisher, geometry FROM service LIMIT 10;
+      SELECT id, wfs_url, title, description, publisher, geometry FROM service LIMIT 100;
     """
     result = engine.execute(query).fetchall()
     list_all_services = []
@@ -20,7 +20,7 @@ def find_all_services():
     if len(result) > 0:
         for s in result:
             list_all_services.append(
-                Service(s[0], s[1], s[2], s[3], s[4], s[5], s[6], find_feature_of_service(s[0])))
+                Service(s[0], s[1], s[2], s[3], s[4], s[5], find_feature_of_service(s[0])))
 
     return [s.serialize() for s in list_all_services]
 
@@ -43,7 +43,7 @@ def find_feature_of_service(service_id):
 
 def find_service(id):
     query = """
-      SELECT id, url, type, title, description, publisher, geometry FROM service WHERE id = '""" + id + """';
+      SELECT id, wfs_url, title, description, publisher, geometry FROM service WHERE id = '""" + id + """';
     """
     result = engine.execute(query).fetchall()
 
@@ -51,7 +51,7 @@ def find_service(id):
 
     if len(result) > 0:
         for s in result:
-            service = Service(s[0], s[1], s[2], s[3], s[4], s[5], s[6], None)
+            service = Service(s[0], s[1], s[2], s[3], s[4], s[5], None)
 
     return service.serialize()
 
