@@ -23,7 +23,7 @@ public class FeatureService {
      * @return
      */
     public String reliable(String id) {
-        URI uri = URI.create("http://service-finder:5000/similars/"+id);
+        URI uri = URI.create("http://api_search_engine:5000/similar/feature-types/"+id);
         return this.restTemplate.getForObject(uri, String.class);
     }
 
