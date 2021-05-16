@@ -2,9 +2,7 @@ package br.com.helisson.resilientsdi.featureretriever.domain;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -26,8 +24,9 @@ public class FeatureType {
     @Column
     private String keywords;
 
-    @Column
-    private String serviceId;
+    @ManyToOne
+    @JoinColumn
+    private Service service;
 
     @Column
     private Date startDate;
