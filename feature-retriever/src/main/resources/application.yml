@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://sdi-database:5432/inde_database_docker"
+    username: "postgres"
+    password: "postgres"
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
