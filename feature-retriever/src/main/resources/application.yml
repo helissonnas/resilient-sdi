@@ -1,0 +1,22 @@
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/inde_database_docker}
+    username: "postgres"
+    password: "postgres"
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+server:
+  port: ${PORT:8087}
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 2
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 5s

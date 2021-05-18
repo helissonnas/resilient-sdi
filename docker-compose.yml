@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  sdi-database:
+    container_name: sdi-database
+    build:
+      context: database
+    networks:
+      - resilient-sdi-network
+
+  sdi-gateway:
+    container_name: sdi-gateway
+    networks:
+      - resilient-sdi-network
+    build:
+      context: sdi-gateway
+    ports:
+      - '8080:8080'
+    depends_on:
+      - feature-retriever
+
+  feature-retriever:
+    container_name: feature-retriever
+    environment:
+      - DB_URL=jdbc:postgresql://sdi-database:5432/inde_database_docker
+      - PORT=8080
+    networks:
+      - resilient-sdi-network
+    build:
+      context: feature-retriever
+    depends_on:
+      - sdi-database
+
+  service-finder:
+    container_name: service-finder
+    environment:
+      - DB_URL=jdbc:postgresql://sdi-database:5432/inde_database_docker
+      - PORT=8080
+    networks:
+      - resilient-sdi-network
+    build:
+      context: service-finder
+
+networks:
+  resilient-sdi-network:

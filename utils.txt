@@ -1,0 +1,7 @@
+sudo docker run --name postgis-feature-db -e POSTGRES_PASSWORD=sapo1606 -p 5432:5432 -v /home/bd/postgresql:/var/lib/postgresql/data -d postgis/postgis
+
+docker exec -t your-db-container pg_restore -c -U postgres > backup_inde_database.backup
+https://simkimsia.com/how-to-restore-database-dumps-for-postgres-in-docker-container/
+
+solo bugado: 56f341da-cc0a-4368-87ff-daf2c29d2eea
+solo ok: 22fad002-cd0e-4f51-8155-d35df09dd51e
