@@ -24,8 +24,10 @@ COPY ./03_bbox_intersects_area.sql /docker-entrypoint-initdb.d
 
 COPY ./04_similarity.sql /docker-entrypoint-initdb.d
 
+# Download 05_place_insert.sql
 COPY ./05_place_insert.sql /docker-entrypoint-initdb.d
 
+# Download backup from https://drive.google.com/file/d/1OyIXQI2fiCnP-1Nclp1AZJJOD1D1mmQp/view
 COPY ./backup_inde_database.backup /docker-entrypoint-initdb.d
 
 EXPOSE 5432

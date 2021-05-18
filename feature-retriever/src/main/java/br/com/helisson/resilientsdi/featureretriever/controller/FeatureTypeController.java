@@ -1,20 +1,13 @@
 package br.com.helisson.resilientsdi.featureretriever.controller;
 
-import br.com.helisson.resilientsdi.featureretriever.domain.FeatureType;
 import br.com.helisson.resilientsdi.featureretriever.repository.FeatureTypeRepository;
 import br.com.helisson.resilientsdi.featureretriever.service.FeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@Controller("features")
+@RestController
 public class FeatureTypeController {
 
     @Autowired
@@ -23,7 +16,7 @@ public class FeatureTypeController {
     @Autowired
     private FeatureTypeService featureTypeService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping("/features/")
     public @ResponseBody
     ResponseEntity getAll() {
         try {
@@ -33,7 +26,7 @@ public class FeatureTypeController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, name = "/{id}")
+    @GetMapping("/features/{id}")
     public @ResponseBody ResponseEntity get(@PathVariable() String id) {
         try {
             return new ResponseEntity<>(featureTypeRepository.getOne(id), HttpStatus.OK);
@@ -43,12 +36,12 @@ public class FeatureTypeController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET, name = "/resource/{id}")
-    public @ResponseBody ResponseEntity getResource(@PathVariable() String id) {
+    @GetMapping("/features/resource/{id}")
+    public @ResponseBody String getResource(@PathVariable() String id) {
         try {
-            return new ResponseEntity<>(featureTypeService.getFeatureResource(id), HttpStatus.OK);
+            return featureTypeService.getFeatureResource(id);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return e.getMessage();
         }
     }
 }

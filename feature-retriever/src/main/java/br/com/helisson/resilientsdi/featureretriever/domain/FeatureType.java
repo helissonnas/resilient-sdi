@@ -3,7 +3,6 @@ package br.com.helisson.resilientsdi.featureretriever.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -28,27 +27,27 @@ public class FeatureType {
     @JoinColumn
     private Service service;
 
-    @Column
+    @Column(name = "start_date")
     private Date startDate;
 
-    @Column
+    @Column(name = "end_date")
     private Date endDate;
 
     @Column
-    private BigDecimal area;
+    private Double area;
 
-    @Column
+    @Column(name = "features_of_service")
     private Integer featuresOfService;
 
-    @Column
-    private BigDecimal xMin;
+    @Column(name = "x_min")
+    private Double xMin;
 
-    @Column
-    private BigDecimal yMin;
+    @Column(name = "y_min")
+    private Double yMin;
 
-    @Column
-    private BigDecimal xMax;
+    @Column(name = "x_max")
+    private Double xMax;
 
-    @Column
-    private BigDecimal yMax;
+    @Column(name = "y_max")
+    private Double yMax;
 }

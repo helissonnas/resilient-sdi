@@ -8,17 +8,6 @@ services:
     networks:
       - resilient-sdi-network
 
-  feature-indexer:
-    container_name: feature-indexer
-    networks:
-      - resilient-sdi-network
-    volumes:
-      - ./feature-indexer:/server
-    build:
-      context: feature-indexer
-    depends_on:
-      - sdi-database
-
   sdi-gateway:
     container_name: sdi-gateway
     networks:
@@ -29,6 +18,18 @@ services:
       - '8080:8080'
     depends_on:
       - feature-indexer
+
+  feature-retriever:
+    container_name: feature-retriever
+    environment:
+      - DB_URL=jdbc:postgresql://sdi-database:5432/inde_database_docker
+      - PORT=8080
+    networks:
+      - resilient-sdi-network
+    build:
+      context: feature-retriever
+    depends_on:
+      - sdi-database
 
   service-finder:
     container_name: service-finder

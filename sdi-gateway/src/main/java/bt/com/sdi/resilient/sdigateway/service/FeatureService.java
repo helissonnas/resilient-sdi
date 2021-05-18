@@ -13,7 +13,7 @@ public class FeatureService {
 
     @HystrixCommand(fallbackMethod = "reliable")
     public String getFeature(String id) {
-        URI uri = URI.create("http://feature-indexer:5000/feature/" + id + "/url");
+        URI uri = URI.create("http://feature-retriever:8080/features/resource/" + id);
         return this.restTemplate.getForObject(uri, String.class);
     }
 
@@ -23,7 +23,7 @@ public class FeatureService {
      * @return
      */
     public String reliable(String id) {
-        URI uri = URI.create("http://api_search_engine:5000/similar/feature-types/"+id);
+        URI uri = URI.create("http://localhost:5000/similar/feature-types/"+id);
         return this.restTemplate.getForObject(uri, String.class);
     }
 
