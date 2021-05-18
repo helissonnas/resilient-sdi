@@ -8,6 +8,17 @@ services:
     networks:
       - resilient-sdi-network
 
+  user-database:
+    image: postgres:9.6
+    environment: :
+      - POSTGRES_DB=user-database
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5434:5432'
+    volumes:
+      - /Users/helissonnas/data/users_db:/var/lib/postgresql/data/
+
   sdi-gateway:
     container_name: sdi-gateway
     networks:
@@ -40,6 +51,16 @@ services:
       - resilient-sdi-network
     build:
       context: service-finder
+
+  users-service:
+    container_name: users-service
+    environment:
+      - DB_URL=jdbc:postgresql://user-database:5432/user-database
+      - PORT=8080
+    networks:
+      - resilient-sdi-network
+    build:
+      context: users-service
 
 networks:
   resilient-sdi-network:
