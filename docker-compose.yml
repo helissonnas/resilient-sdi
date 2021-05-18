@@ -33,8 +33,9 @@ services:
 
   service-finder:
     container_name: service-finder
-    volumes:
-      - ./service-finder:/server
+    environment:
+      - DB_URL=jdbc:postgresql://sdi-database:5432/inde_database_docker
+      - PORT=8080
     networks:
       - resilient-sdi-network
     build:

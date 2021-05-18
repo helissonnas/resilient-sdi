@@ -27,7 +27,7 @@ public class FeatureTypeService {
 
     @CircuitBreaker(name = "default", fallbackMethod = "fallback")
     @Retry(name = "default", fallbackMethod = "fallback")
-    public String getFeatureResource(String id) {
+    public String getFeatureResource(String id) throws Exception {
         FeatureType featureType = featureTypeRepository.getOne(id);
 
         return this.tries(
@@ -75,12 +75,16 @@ public class FeatureTypeService {
         return wmsUrl.toString();
     }
 
-    private String tries(String resource) {
+    private String tries(String resource) throws Exception {
         logger.info("Trying resource: {}", resource);
 
         URI uri = URI.create(resource);
         try {
-            this.restTemplate.getForObject(uri, String.class);
+            String result = this.restTemplate.getForObject(uri, String.class);
+            if (result != null && result.contains("<ServiceExceptionReport")) {
+                logger.error("WMS Service Exception");
+                throw new Exception(result);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage());
 
