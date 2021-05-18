@@ -1,27 +1,46 @@
 package bt.com.sdi.resilient.sdigateway.api;
 
+import bt.com.sdi.resilient.sdigateway.proxy.FeatureRetrieverProxy;
 import bt.com.sdi.resilient.sdigateway.service.FeatureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping("/feature-retriever")
 public class FeatureController {
-
     @Autowired
-    public FeatureService featureService;
+    private FeatureRetrieverProxy featureRetrieverProxy;
 
-    @RequestMapping(value = "/feature/{id:.+}/redirect")
-    public void featureRedirect(@PathVariable String id, HttpServletResponse httpServletResponse) {
-        httpServletResponse.setHeader("Location", featureService.getFeature(id));
-        httpServletResponse.setStatus(302);
+    @GetMapping("/features/")
+    public @ResponseBody
+    ResponseEntity getAll() {
+        try {
+            return new ResponseEntity<>(featureRetrieverProxy.getAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @RequestMapping(value = "/feature/{id:.+}")
-    public String feature(@PathVariable String id) {
-        return featureService.getFeature(id);
+    @GetMapping("/features/{id}")
+    public @ResponseBody ResponseEntity get(@PathVariable() String id) {
+        try {
+            return new ResponseEntity<>(featureRetrieverProxy.get(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @GetMapping("/features/resource/{id}")
+    public @ResponseBody String getResource(@PathVariable() String id) {
+        try {
+            return featureRetrieverProxy.getResource(id);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }
