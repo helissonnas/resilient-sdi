@@ -17,7 +17,7 @@ services:
     ports:
       - '8080:8080'
     depends_on:
-      - feature-indexer
+      - feature-retriever
 
   feature-retriever:
     container_name: feature-retriever

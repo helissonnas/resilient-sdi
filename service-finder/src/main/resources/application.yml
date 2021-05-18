@@ -9,3 +9,10 @@ spring:
     show-sql: true
 server:
   port: ${PORT:8088}
+
+feign:
+  client:
+    config:
+      api-search-engine:
+        name: api-search-engine
+        url: localhost:5000

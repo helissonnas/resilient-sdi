@@ -65,6 +65,8 @@ public class FeatureTypeService {
                 .append("&srs=EPSG:4326")
                 .append("&format=application/openlayers");
 
+        wmsUrl.append("&HEIGHT=1000&WIDTH=1000");
+
         wmsUrl.append("&BBOX=")
                 .append(boundBox.getBoundBoxString());
 
