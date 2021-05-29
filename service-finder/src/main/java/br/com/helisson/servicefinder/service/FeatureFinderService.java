@@ -2,6 +2,7 @@ package br.com.helisson.servicefinder.service;
 
 import br.com.helisson.servicefinder.proxy.ApiSearchEngineProxy;
 import br.com.helisson.servicefinder.proxy.SearchEngineRequestDto;
+import br.com.helisson.servicefinder.proxy.UsersServiceProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,13 @@ public class FeatureFinderService {
     @Autowired
     private ApiSearchEngineProxy apiSearchEngineProxy;
 
+    @Autowired
+    private UsersServiceProxy usersServiceProxy;
+
     public String findSimilar(String id) {
         List<String> similars = apiSearchEngineProxy.similarFeatures(id);
+
+        usersServiceProxy.report("admin", id, "soils_brazil_wrb_wgs84");
 
         if (!similars.isEmpty()) {
             return similars.get(0);

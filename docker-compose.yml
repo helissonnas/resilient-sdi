@@ -10,12 +10,15 @@ services:
 
   user-database:
     image: postgres:9.6
-    environment: :
+    container_name: user-database
+    environment:
       - POSTGRES_DB=user-database
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5434:5432'
+    networks:
+      - resilient-sdi-network
     volumes:
       - /Users/helissonnas/data/users_db:/var/lib/postgresql/data/
 

@@ -4,12 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode
-@Entity(name = "sdi_user")
-public class User {
+@Entity(name = "feature_resource")
+public class FeatureResource {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
@@ -18,11 +17,16 @@ public class User {
     private String name;
 
     @Column(nullable = false)
-    private String email;
+    private String feature;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<FeatureResource> featureResources;
+    @Column(nullable = false)
+    private Boolean enableReplacement;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<App> apps;
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
+    @ManyToOne
+    @JoinColumn
+    private App app;
 }

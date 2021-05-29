@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode
-@Entity(name = "sdi_user")
-public class User {
+@Entity(name = "app")
+public class App {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
@@ -17,12 +17,10 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String email;
+    @ManyToOne
+    @JoinColumn
+    private User user;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<FeatureResource> featureResources;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<App> apps;
+    @OneToMany(mappedBy = "app")
+    private List<Report> reports;
 }
