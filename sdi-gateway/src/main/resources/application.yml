@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: feature-retriever
+          uri: http://feature-retriever:8080
+          predicates:
+            - Path=/features/**
+        - id: users-server
+          uri: http://users-service:8080
+          predicates:
+            - Path=/user/**

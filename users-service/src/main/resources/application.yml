@@ -8,6 +8,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 server:
   port: ${PORT:8089}

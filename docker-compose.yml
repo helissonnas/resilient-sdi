@@ -44,6 +44,7 @@ services:
       context: feature-retriever
     depends_on:
       - sdi-database
+      - users-service
 
   service-finder:
     container_name: service-finder
