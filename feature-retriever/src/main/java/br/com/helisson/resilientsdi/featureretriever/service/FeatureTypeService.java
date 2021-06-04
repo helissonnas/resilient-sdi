@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLDocument;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FeatureTypeService {
@@ -27,10 +29,10 @@ public class FeatureTypeService {
 
     @CircuitBreaker(name = "default", fallbackMethod = "fallback")
     @Retry(name = "default", fallbackMethod = "fallback")
-    public String getFeatureResource(String id) throws Exception {
+    public Map getFeatureResource(String id) throws Exception {
         FeatureType featureType = featureTypeRepository.getOne(id);
 
-        return this.tries(
+        String url = this.tries(
                 this.buildResource(
                         featureType.getService().getWmsUrl(),
                         featureType.getName(),
@@ -41,13 +43,29 @@ public class FeatureTypeService {
                                 featureType.getYMax())
                 )
         );
+
+        return buildResult(id, url, false, null);
     }
 
-    public String fallback(String id, Exception e) {
+    public Map fallback(String id, Exception e) {
         logger.warn("Entering in fallback method");
 
-        URI uri = URI.create("http://service-finder:8080/similar/feature-types/"+id);
-        return this.restTemplate.getForObject(uri, String.class);
+        URI uri = URI.create("http://service-finder:8080/similar/feature-types/" + id);
+        String alternativeId = this.restTemplate.getForObject(uri, String.class);
+
+        FeatureType featureType = featureTypeRepository.getOne(alternativeId);
+
+        String url = this.buildResource(
+                        featureType.getService().getWmsUrl(),
+                        featureType.getName(),
+                        new BoundBox(
+                                featureType.getXMin(),
+                                featureType.getYMin(),
+                                featureType.getXMax(),
+                                featureType.getYMax())
+        );
+
+        return buildResult(alternativeId, url, true, e.getMessage());
     }
 
     private String buildResource(String wmsResource, String featureName, BoundBox boundBox) {
@@ -76,7 +94,7 @@ public class FeatureTypeService {
     }
 
     private String tries(String resource) throws Exception {
-        logger.info("Trying resource: {}", resource);
+        logger.warn("Trying resource: {}", resource);
 
         URI uri = URI.create(resource);
         try {
@@ -92,5 +110,18 @@ public class FeatureTypeService {
         }
 
         return resource;
+    }
+
+    private Map<String, Object> buildResult(String id, String url, boolean fallback, String errorMsg) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("feature_id", id);
+        result.put("iframe", url);
+        result.put("its_fallback", fallback);
+
+        if (fallback) {
+            result.put("error", errorMsg);
+        }
+
+        return result;
     }
 }

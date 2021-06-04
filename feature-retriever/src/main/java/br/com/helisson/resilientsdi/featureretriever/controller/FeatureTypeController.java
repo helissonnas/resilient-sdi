@@ -37,11 +37,11 @@ public class FeatureTypeController {
 
 
     @GetMapping("/features/resource/{id}")
-    public @ResponseBody String getResource(@PathVariable() String id) {
+    public @ResponseBody ResponseEntity getResource(@PathVariable() String id) {
         try {
-            return featureTypeService.getFeatureResource(id);
+            return new ResponseEntity(featureTypeService.getFeatureResource(id), HttpStatus.OK);
         } catch (Exception e) {
-            return e.getMessage();
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
